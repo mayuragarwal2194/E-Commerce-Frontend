@@ -1,0 +1,13 @@
+.adminpanel input[type='file'] {
+  max-width: 215px;
+}
+
+.adminpanel input {
+  flex: 50%;
+}
+
+.adminpanel .add-product-btn {
+  background-color: var(--shopper-red);
+  border: 1px solid var(--shopper-red);
+  font-size: 20px;
+}
