@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
+// components/AddCategory.jsx
 
-const AddCategory = ({ fetchCategories }) => {
-  const [category, setCategory] = useState({
+import React, { useState, useEffect } from 'react';
+
+const AddCategory = ({ fetchCategories, categoryToEdit }) => {
+  const initialCategoryState = {
     name: '',
-    parentCategory: '',
-    active: true,
+    parent: '', // Initialize as an empty string
+    isActive: true,
     showInNavbar: false,
-  });
+  };
+
+  const [category, setCategory] = useState(initialCategoryState);
+
+  useEffect(() => {
+    if (categoryToEdit) {
+      setCategory({
+        ...categoryToEdit,
+        parent: categoryToEdit.parent || '', // Ensure parent is an empty string if null
+      });
+    } else {
+      setCategory(initialCategoryState);
+    }
+  }, [categoryToEdit]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -19,35 +34,50 @@ const AddCategory = ({ fetchCategories }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/categories', {
-        method: 'POST',
+      // Remove 'parent' field from category if it's an empty string
+      const categoryData = {
+        ...category,
+        parent: category.parent || null, // Set parent to null if it's an empty string
+      };
+
+      let url = 'http://localhost:5000/categories';
+      let method = 'POST';
+
+      if (categoryToEdit) {
+        url += `/${categoryToEdit._id}`;
+        method = 'PUT';
+      }
+
+      const response = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(category),
+        body: JSON.stringify(categoryData),
       });
 
       if (response.ok) {
-        alert('Category added successfully!');
-        fetchCategories(); // Refresh categories after adding
-        setCategory({
-          name: '',
-          parentCategory: '',
-          active: true,
-          showInNavbar: false,
-        });
+        if (categoryToEdit) {
+          alert('Category updated successfully!');
+        } else {
+          alert('Category added successfully!');
+        }
+        fetchCategories(); // Refresh categories after adding or updating
+        setCategory(initialCategoryState); // Reset form state
       } else {
-        throw new Error('Failed to add category');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to add or update category');
       }
     } catch (error) {
-      console.error('Error adding category:', error);
+      console.error('Error adding or updating category:', error.message);
+      // Handle error state or show error to the user
     }
   };
 
   return (
     <div className="add-category">
-      <h2>Add Category</h2>
-      <form onSubmit={handleSubmit}>
+      <h2>{categoryToEdit ? 'Edit Category' : 'Add Category'}</h2>
+      <form onSubmit={handleSubmit} className="d-flex flex-column align-items-start gap-3">
         <input
           type="text"
           name="name"
@@ -58,30 +88,34 @@ const AddCategory = ({ fetchCategories }) => {
         />
         <input
           type="text"
-          name="parentCategory"
-          value={category.parentCategory}
+          name="parent"
+          value={category.parent || ''} // Ensure value is an empty string if null
           onChange={handleChange}
-          placeholder="Parent Category (optional)"
+          placeholder="Parent Category ID (optional)"
         />
-        <label>
-          Active:
-          <input
-            type="checkbox"
-            name="active"
-            checked={category.active}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Show in Navbar:
-          <input
-            type="checkbox"
-            name="showInNavbar"
-            checked={category.showInNavbar}
-            onChange={handleChange}
-          />
-        </label>
-        <button type="submit">Add Category</button>
+        <div>
+          <label>
+            Active:
+            <input
+              type="checkbox"
+              name="isActive"
+              checked={category.isActive}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Show in Navbar:
+            <input
+              type="checkbox"
+              name="showInNavbar"
+              checked={category.showInNavbar}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+        <button type="submit" className='btn_fill_red text-white px-4 py-2 rounded-pill cursor-pointer fw-500'>
+          {categoryToEdit ? 'Update Category' : 'Add Category'}
+        </button>
       </form>
     </div>
   );
