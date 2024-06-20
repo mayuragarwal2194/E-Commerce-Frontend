@@ -1,3 +1,5 @@
+// App.js
+
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
@@ -31,15 +33,16 @@ function AppContent() {
       {shouldRenderNavbarAndFooter && <Navbar />}
       <Routes>
         <Route path='/' element={<Shop />} />
-        <Route path='/mens' element={<ShopCategory category="men" />} />
-        <Route path='/womens' element={<ShopCategory category="women" />} />
-        <Route path='/kids' element={<ShopCategory category="kid" />} />
+        <Route path='/mens' element={<ShopCategory category="mens" />} />
+        <Route path='/womens' element={<ShopCategory category="womens" />} />
+        <Route path='/kids' element={<ShopCategory category="kids" />} />
         <Route path='/product' element={<Product />} />
         <Route path='/product/:productId' element={<Product />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/login' element={<LoginSignup />} />
         <Route path='/admin/*' element={<AdminPanel />} /> {/* Route for Admin panel */}
         <Route path="/admin/edit/:productId" element={<AdminPanel />} />
+        <Route path="/admin/categories/edit/:categoryId" element={<AdminPanel />} /> {/* Route for editing categories */}
       </Routes>
       {shouldRenderNavbarAndFooter && <Footer />}
     </>

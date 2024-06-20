@@ -19,12 +19,12 @@ const Navbar = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:5000/categories/viewcategory');
+      const response = await fetch('http://localhost:5000/categories');
       if (response.ok) {
         const data = await response.json();
         setCategories(data);
       } else {
-        console.error('Failed to fetch categories');
+        throw new Error('Failed to fetch categories');
       }
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -48,18 +48,21 @@ const Navbar = () => {
               </Link>
             </li>
             {categories
-              .filter((category) => category.showInNavbar)
-              .map((category) => (
-                <li
-                  key={category._id}
-                  onClick={() => setMenu(category.name.toLowerCase())}
-                  className={`cursor-pointer ${menu === category.name.toLowerCase() && 'active'}`}
-                >
-                  <Link className="text-decoration-none" to={`/${category.name.toLowerCase()}`}>
-                    {category.name}
-                  </Link>
-                </li>
-              ))}
+              .filter(({ showInNavbar, isActive }) => showInNavbar && isActive)
+              .map(({ _id, name }) => {
+                const lowerCaseName = name.toLowerCase();
+                return (
+                  <li
+                    key={_id}
+                    onClick={() => setMenu(lowerCaseName)}
+                    className={`cursor-pointer ${menu === lowerCaseName ? 'active' : ''}`}
+                  >
+                    <Link className="text-decoration-none text-capitalize" to={`/${lowerCaseName}`}>
+                      {name}
+                    </Link>
+                  </li>
+                );
+              })}
           </ul>
           <div className="nav-login-cart d-flex align-items-center gap-4">
             <Link className="text-decoration-none" to="/login">
