@@ -88,7 +88,7 @@ const AdminPanel = () => {
             <ProductForm fetchProducts={fetchProducts} />
           )}
           {activeTab === 'viewProducts' && (
-            <ViewProducts products={products} fetchProducts={fetchProducts} />
+            <ViewProducts products={products} fetchProducts={fetchProducts} categories={categories} />
           )}
           {activeTab === 'addCategories' && (
             <AddCategory fetchCategories={fetchCategories} />

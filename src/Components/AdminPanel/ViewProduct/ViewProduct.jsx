@@ -1,12 +1,41 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// ViewProducts.jsx
 
-const ViewProducts = ({ products, fetchProducts }) => {
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './ViewProducts.css'; // Custom CSS for the modal
+import Filter from '../../Filter/Filter';
+import Search from '../../Search/Search';
+import ProductTable from '../ProductTable/ProductTable';
+
+const ViewProducts = ({ products, fetchProducts, categories }) => {
   const navigate = useNavigate();
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  const filterOptions = [
+    {
+      label: 'Category',
+      values: categories.map(category => category.name),
+    },
+    // Add more filter options if needed
+  ];
 
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]); // Include fetchProducts in the dependency array
+  }, []);
+
+  useEffect(() => {
+    setFilteredProducts(products);
+  }, [products]);
+
+  useEffect(() => {
+    const lowercasedQuery = searchQuery.toLowerCase();
+    const searchedProducts = products.filter((prod) =>
+      prod.itemName.toLowerCase().includes(lowercasedQuery)
+    );
+    setFilteredProducts(searchedProducts);
+  }, [searchQuery, products]);
 
   const handleEdit = (prod) => {
     navigate(`/admin/edit/${prod._id}`);
@@ -20,7 +49,7 @@ const ViewProducts = ({ products, fetchProducts }) => {
         });
 
         if (response.ok) {
-          fetchProducts(); // Fetch products again after successful deletion
+          fetchProducts();
         } else {
           console.error('Failed to delete product');
         }
@@ -30,42 +59,54 @@ const ViewProducts = ({ products, fetchProducts }) => {
     }
   };
 
+  const toggleFilterModal = () => {
+    setShowFilterModal(!showFilterModal);
+  };
+
+  const handleApplyFilters = (selectedFilters) => {
+    const filtered = products.filter((prod) => {
+      return Object.keys(selectedFilters).every((key) => {
+        if (selectedFilters[key].length === 0) return true;
+        return selectedFilters[key].includes(prod[key.toLowerCase()]);
+      });
+    });
+
+    setFilteredProducts(filtered);
+    setShowFilterModal(false);
+  };
+
   return (
     <div className="w-100">
       <h2 className="mb-4">View Products</h2>
-      <div className="table-responsive">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Item Name</th>
-              <th>New Price</th>
-              <th>Old Price</th>
-              <th>Category</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((prod) => (
-              <tr key={prod._id}>
-                <td>{prod.id}</td>
-                <td>{prod.itemName}</td>
-                <td>${prod.new_price}</td>
-                <td>${prod.old_price}</td>
-                <td>{prod.category}</td>
-                <td>
-                  <button className="btn btn-primary btn-sm me-2" onClick={() => handleEdit(prod)}>
-                    Edit
-                  </button>
-                  <button className="btn btn-danger btn-sm" onClick={() => handleDelete(prod._id)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="d-flex align-items-center gap-5 me-5 pe-5 mb-3">
+        <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <button className="border-0 bg-transparent" onClick={toggleFilterModal}>
+          Filter <i className="ri-filter-3-line"></i>
+        </button>
       </div>
+      <ProductTable
+        products={filteredProducts}
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+      />
+
+      {showFilterModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5>Filter Products</h5>
+              <button type="button" className="close" onClick={toggleFilterModal}>&times;</button>
+            </div>
+            <div className="modal-body">
+              <Filter filterOptions={filterOptions} onApplyFilters={handleApplyFilters} />
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={toggleFilterModal}>Close</button>
+              <button type="button" className="btn btn-primary" onClick={handleApplyFilters}>Apply Filters</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

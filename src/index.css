@@ -48,6 +48,18 @@ body {
   outline: none;
 }
 
+.object-cover{
+  object-fit: cover;
+}
+
+.object-position-top{
+  object-position: top;
+}
+
+.vertical-align-middle{
+  vertical-align: middle;
+}
+
 
 
 .section-head h1{

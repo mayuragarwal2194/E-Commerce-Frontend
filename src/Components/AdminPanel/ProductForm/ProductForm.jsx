@@ -140,17 +140,21 @@ const ProductForm = ({ fetchProducts }) => {
             onChange={handleChange}
             className="px-3 py-1 me-3"
             placeholder="Item Name"
+            required
           />
         </div>
         <div>
           <input
+            type='number'
             name="new_price"
             value={product.new_price}
             onChange={handleChange}
             className="px-3 py-1 me-3"
             placeholder="New Price"
+            required
           />
           <input
+            type='number'
             name="old_price"
             value={product.old_price}
             onChange={handleChange}
@@ -164,6 +168,7 @@ const ProductForm = ({ fetchProducts }) => {
             value={product.category}
             onChange={handleChange}
             className="px-3 py-1 me-3"
+            required
           >
             <option value="">Select Category</option>
             {categories.map((cat) => (
