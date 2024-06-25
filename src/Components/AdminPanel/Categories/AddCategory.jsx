@@ -21,6 +21,7 @@ const AddCategory = ({ fetchCategories, categoryToEdit }) => {
     } else {
       setCategory(initialCategoryState);
     }
+  // eslint-disable-next-line
   }, [categoryToEdit]);
 
   const handleChange = (e) => {

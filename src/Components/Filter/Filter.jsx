@@ -1,19 +1,22 @@
-// components/Filter/Filter.js
-
+// Filter.jsx
 import React, { useState } from 'react';
 
 const Filter = ({ filterOptions, onApplyFilters }) => {
   const [selectedFilters, setSelectedFilters] = useState({});
 
-  const handleFilterChange = (option, value) => {
-    setSelectedFilters((prevFilters) => ({
-      ...prevFilters,
-      [option]: prevFilters[option]
-        ? prevFilters[option].includes(value)
-          ? prevFilters[option].filter((item) => item !== value)
-          : [...prevFilters[option], value]
-        : [value],
-    }));
+  const handleFilterChange = (option, value, checked) => {
+    setSelectedFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters };
+      if (checked) {
+        if (!updatedFilters[option]) {
+          updatedFilters[option] = [];
+        }
+        updatedFilters[option].push(value);
+      } else {
+        updatedFilters[option] = updatedFilters[option].filter((v) => v !== value);
+      }
+      return updatedFilters;
+    });
   };
 
   return (
@@ -27,7 +30,7 @@ const Filter = ({ filterOptions, onApplyFilters }) => {
                 <input
                   type="checkbox"
                   value={value}
-                  onChange={() => handleFilterChange(option.label, value)}
+                  onChange={(e) => handleFilterChange(option.label, value, e.target.checked)}
                 />
                 {value}
               </label>
@@ -35,6 +38,13 @@ const Filter = ({ filterOptions, onApplyFilters }) => {
           ))}
         </div>
       ))}
+      <button
+        type="button"
+        className="btn btn-primary"
+        onClick={() => onApplyFilters(selectedFilters)}
+      >
+        Apply Filters
+      </button>
     </div>
   );
 };

@@ -102,7 +102,6 @@ const ViewProducts = ({ products, fetchProducts, categories }) => {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" onClick={toggleFilterModal}>Close</button>
-              <button type="button" className="btn btn-primary" onClick={handleApplyFilters}>Apply Filters</button>
             </div>
           </div>
         </div>

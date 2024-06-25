@@ -14,7 +14,7 @@ const CartItems = () => {
   return (
     <div className='cartitems my-5'>
       <div className="container">
-        <div className="row cartitems-format-main text-center">
+        <div className="row cartitems-format-main text-center border-bottom pb-3">
           <div className="col">Products</div>
           <div className="col-3 text-start">Title</div>
           <div className="col">Price</div>
@@ -22,7 +22,6 @@ const CartItems = () => {
           <div className="col">Total</div>
           <div className="col">Delete</div>
         </div>
-        <hr />
         {cartProducts.map((item) => (
           <div key={item.id} className="row align-items-center cart-item text-center">
             <div className="col">
@@ -51,14 +50,14 @@ const CartItems = () => {
           <div className="col-md-6">
             <div className="mb-3">
               <label htmlFor="promoCode" className="form-label cursor-pointer">If you have a promo code, enter it here:</label>
-              <div className="input-group">
+              <div className="d-flex">
                 <input type="text" className="form-control" id="promoCode" placeholder="Promo code" />
                 <button className="btn btn-outline-secondary promo-apply-btn text-white" type="button">Apply</button>
               </div>
             </div>
           </div>
           <div className="col-md-6">
-            <div className="card custom-card">
+            <div className="custom-card">
               <div className="card-body">
                 <h5 className="card-title">Cart Total</h5>
                 <div className="d-flex justify-content-between mb-2">
