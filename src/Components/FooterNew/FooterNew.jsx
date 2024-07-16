@@ -1,5 +1,6 @@
-import React from 'react'
-import './FooterNew.css'
+ /* eslint-disable */
+import React from 'react';
+import './FooterNew.css';
 
 const FooterNew = () => {
   return (
@@ -21,13 +22,12 @@ const FooterNew = () => {
                     placeholder="E-mail"
                     className="bg-transparent w-100 mt-3 text-creame"
                   />
-                  <a
-                    href="#"
+                  <button
                     role="button"
                     className="ff-btn ff-btn-fill-light text-uppercase text-decoration-none d-block w-fit-content mt-3"
                   >
                     Subscribe
-                  </a>
+                  </button>
                 </div>
               </div>
               <div className="col-12 col-lg-9">
@@ -138,15 +138,15 @@ const FooterNew = () => {
                     </button>
                     <div className="dropdown-content">
                       <div className="ps-3 py-3 d-flex flex-column gap-2">
-                        <a href="#service1" className="nav-currency d-flex align-items-center gap-2">
+                        <a href="#" className="nav-currency d-flex align-items-center gap-2">
                           <img src="./icons/us.svg" alt="" />
                           <span>United States (USD $)</span>
                           <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 1L5 5L1 1" stroke="#ffffff" strokeLinecap="square" />
                           </svg>
                         </a>
-                        <a href="#service2">Service 2</a>
-                        <a href="#service3">Service 3</a>
+                        <a href="#">Service 2</a>
+                        <a href="#">Service 3</a>
                       </div>
                     </div>
                   </div>
@@ -176,7 +176,7 @@ const FooterNew = () => {
         </div>
       </footer>
     </>
-  )
+  );
 }
 
-export default FooterNew
+export default FooterNew;

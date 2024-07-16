@@ -22,7 +22,7 @@ const ShopContextProvider = ({ children }) => {
   const getDefaultCart = (products) => {
     let cart = {};
     products.forEach(product => {
-      cart[product.id] = 0;
+      cart[product._id] = 0; // Ensure you are using the correct ID field
     });
     return cart;
   };

@@ -124,6 +124,10 @@
   position: static;
 }
 
+.navbar-section.inside-banner.reveal .nav-item a{
+  color: var(--black);
+}
+
 .navbar-section.inside-banner.reveal i {
   color: black !important;
 }
@@ -237,6 +241,10 @@
 	flex-shrink: 0;
 }
 
+.mega-menu a{
+  border-bottom: none !important;
+}
+
 .mega-navs .mega-nav:first-child {
 	margin-top: 0;
 }
@@ -302,4 +310,8 @@
 .mega-card-collection .collection-name {
 	font-size: 16px;
 	letter-spacing: 2.34px;
+}
+
+.nav-item:hover .dropdown-content.mega-menu {
+  display: block; /* Show on hover */
 }
