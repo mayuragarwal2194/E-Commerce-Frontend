@@ -4,7 +4,7 @@ import './OurSelectionSection.css'
 const OurSelectionSection = () => {
   return (
     <>
-      <section className="selection-section w-100 section-padding text-center bg-orange">
+      <section className="selection-section w-100 section-padding text-center theme-bg">
         <div className="container h-100">
           <div className="section-header">
             <h6 className="section-subhead">Our selection</h6>

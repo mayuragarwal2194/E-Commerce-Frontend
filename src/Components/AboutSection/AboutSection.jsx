@@ -4,7 +4,7 @@ import './AboutSection.css'
 const AboutSection = () => {
   return (
     <>
-      <section className="about-section w-100 section-padding bg-orange">
+      <section className="about-section w-100 section-padding theme-bg">
         <div className="container">
           <div className="row about-row align-items-center justify-content-center">
             <div className="col-12 col-lg-5">

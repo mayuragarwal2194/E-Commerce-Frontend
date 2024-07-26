@@ -12,7 +12,7 @@ const PopularNew = () => {
   };
   return (
     <>
-      <section className="popular-section section-padding text-center bg-orange">
+      <section className="popular-section section-padding text-center theme-bg">
         <div className="container">
           <div className="section-header">
             <h6 className="section-subhead">Shop</h6>

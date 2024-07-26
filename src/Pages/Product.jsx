@@ -12,17 +12,24 @@ const Product = () => {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    const numericProductId = Number(productId);
+    console.log('All Products:', allProducts);
+    console.log('Product ID:', productId);
 
-    const foundProduct = allProducts.find((e) => e.id === numericProductId);
-
-    setProduct(foundProduct);
+    // Wait until allProducts is populated before attempting to find the product
+    if (allProducts.length > 0) {
+      const foundProduct = allProducts.find((e) => e._id === productId);
+      setProduct(foundProduct);
+    }
   }, [allProducts, productId]);
 
   // Scroll to top when product changes
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [productId]);
+
+  if (allProducts.length === 0) {
+    return <div>Loading products...</div>; // Show a loading message while products are being fetched
+  }
 
   if (!product) {
     return <div>Product not found</div>;
@@ -33,8 +40,7 @@ const Product = () => {
       <div className='container'>
         <Breadcrum product={product} />
         <ProductDisplay product={product} />
-        <DescriptionBox />
-        <RelatedProducts category={product.category} currentProductId={product.id} />
+        <RelatedProducts category={product.category} currentProductId={product._id} />
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ const Popular = () => {
         </div>
         <div className="row row-cols-1 row-cols-md-4 g-4">
           {popularProducts.map((item, i) => (
-            <Item key={i} id={item.id} image={item.image} itemName={item.itemName} new_price={item.new_price} old_price={item.old_price} />
+            <Item key={i} id={item.id} image={item.featuredImage} itemName={item.itemName} new_price={item.newPrice} oldPrice={item.oldPrice} />
           ))}
         </div>
       </div>

@@ -15,7 +15,7 @@ const NewCollections = () => {
         <div className="collections">
           <div className="row row-cols-1 row-cols-md-4 g-4">
             {new_collection.map((item, i) => {
-              return <Item key={i} image={item.image} itemName={item.itemName} new_price={item.new_price} old_price={item.old_price} />
+              return <Item key={i} image={item.image} itemName={item.itemName} new_price={item.new_price} oldPrice={item.oldPrice} />
             })}
           </div>
         </div>

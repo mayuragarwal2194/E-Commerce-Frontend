@@ -3,7 +3,7 @@ import './CategorySection.css'
 
 const CategorySection = () => {
   return (
-    <section className="category-section section-padding text-center bg-orange">
+    <section className="category-section section-padding text-center theme-bg">
       <div className="container">
         <div className="section-header">
           <h6 className="section-subhead">Browse by</h6>

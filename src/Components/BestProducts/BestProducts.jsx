@@ -2,28 +2,51 @@ import React, { useEffect, useState } from 'react';
 import Slider from "react-slick";
 import './BestProducts.css';
 import ItemNew from '../ItemNew/ItemNew';
-// import Item from '../Item/Item';
+import { fetchParentCategories, getProductsByCategory } from '../../services/api';
 
 const BestProducts = () => {
   const [popularProducts, setPopularProducts] = useState([]);
   const [activeTab, setActiveTab] = useState('women'); // Default active tab is 'women'
+  const [categories, setCategories] = useState({ women: null, men: null });
 
   useEffect(() => {
-    const fetchPopularProducts = async () => {
+    const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:5000/products');
-        const products = await response.json();
-        const popularItems = products.filter(product => product.isPopular);
-        setPopularProducts(popularItems);
+        const categoryData = await fetchParentCategories();
+        const womenCategory = categoryData.find(category => category.name.toLowerCase() === 'women');
+        const menCategory = categoryData.find(category => category.name.toLowerCase() === 'men');
+        setCategories({ women: womenCategory?._id, men: menCategory?._id });
+        
+        if (womenCategory) {
+          const products = await getProductsByCategory(womenCategory._id);
+          const popularItems = products.filter(product => product.isPopular);
+          setPopularProducts(popularItems);
+        }
       } catch (error) {
-        console.error('Error fetching popular products:', error);
+        console.error('Error fetching categories or products:', error);
       }
     };
 
-    fetchPopularProducts();
+    fetchCategories();
   }, []);
 
-  var settings = {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (categories[activeTab]) {
+        try {
+          const products = await getProductsByCategory(categories[activeTab]);
+          const popularItems = products.filter(product => product.isPopular);
+          setPopularProducts(popularItems);
+        } catch (error) {
+          console.error('Error fetching popular products:', error);
+        }
+      }
+    };
+
+    fetchProducts();
+  }, [activeTab, categories]);
+
+  const settings = {
     dots: false,
     infinite: false,
     speed: 500,
@@ -36,7 +59,7 @@ const BestProducts = () => {
   };
 
   return (
-    <section className="best-section section-padding text-center bg-orange">
+    <section className="best-section section-padding text-center theme-bg">
       <div className="section-header">
         <h6 className="section-subhead">Our best sellers</h6>
       </div>
@@ -58,19 +81,16 @@ const BestProducts = () => {
           </div>
           <div className="slider-container responsive" id='best-sliderContainer'>
             <Slider {...settings}>
-              {popularProducts
-                .filter(item => item.category === (activeTab === 'women' ? 'womens' : 'mens'))
-                .map((item, i) => (
-                  <ItemNew
-                    key={i}
-                    id={item.id}
-                    image={item.image}
-                    itemName={item.itemName}
-                    new_price={item.new_price}
-                    old_price={item.old_price}
-                  />
-                ))
-              }
+              {popularProducts.map((item, i) => (
+                <ItemNew
+                  key={i}
+                  id={item._id}
+                  image={item.featuredImage}
+                  itemName={item.itemName}
+                  newPrice={item.newPrice}
+                  oldPrice={item.oldPrice}
+                />
+              ))}
             </Slider>
           </div>
         </div>

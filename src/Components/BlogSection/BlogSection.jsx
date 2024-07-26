@@ -13,7 +13,7 @@ const BlogSection = () => {
   };
   return (
     <>
-      <section className="blog-section w-100 section-padding bg-orange">
+      <section className="blog-section w-100 section-padding theme-bg">
         <div className="container">
           <div className="section-header text-center">
             <h6 className="section-subhead">News</h6>

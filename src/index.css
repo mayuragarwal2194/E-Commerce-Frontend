@@ -47,6 +47,8 @@
   --accent: #f8e4cb;
   --accent-secondary: #cdaf97;
 
+  --theme-bg: #f8e4cb25;
+
   --gray-6b: #6B6B6B;
 
   /* Section Spacing */
@@ -154,7 +156,7 @@ body {
   background-color: var(--primary);
 }
 
-.bg-black-1c{
+.bg-black-1c {
   background-color: var(--text-primary);
 }
 
@@ -162,7 +164,11 @@ body {
   background-color: var(--accent);
 }
 
-.bg-light-orange{
+.theme-bg {
+  background-color: var(--theme-bg);
+}
+
+.bg-light-orange {
   background-color: rgba(248, 228, 203, 0.25);
 }
 
@@ -178,7 +184,7 @@ body {
   letter-spacing: 2.16px;
 }
 
-.letter-32{
+.letter-32 {
   letter-spacing: 3.2px;
 }
 
@@ -222,40 +228,52 @@ body {
 
 /* Css for buttons */
 .ff-btn {
-	border-radius: var(--ff-btn-rounded);
-	cursor: pointer;
-	font-family: var(--large-font-family);
-	font-size: var(--large-font-size);
-	font-weight: var(--large-font-weight);
-	letter-spacing: var(--large-letter-spacing);
-	/* line-height: var(--large-line-height); */
-	padding: 14px 38px;
+  border-radius: var(--ff-btn-rounded);
+  cursor: pointer;
+  font-family: var(--large-font-family);
+  font-size: var(--large-font-size);
+  font-weight: var(--large-font-weight);
+  letter-spacing: var(--large-letter-spacing);
+  /* line-height: var(--large-line-height); */
+  padding: 14px 38px;
 }
 
 .ff-btn-small {
-	padding: 8px 16px !important;
+  padding: 8px 16px !important;
 }
 
 .ff-btn-fill-dark {
-	background-color: var(--black);
-	border: 1px solid var(--black);
-	color: var(--white);
-	transition: all ease 0.2s;
+  background-color: var(--black);
+  border: 1px solid var(--black);
+  color: var(--white);
+  transition: all ease 0.2s;
 }
 
 .ff-btn-fill-dark:hover {
-	background-color: transparent;
-	color: var(--black);
+  background-color: transparent;
+  color: var(--black);
+}
+
+.ff-btn-outline-dark {
+  border: 1px solid var(--black);
+  background-color: transparent;
+  color: var(--black);
+  transition: all ease 0.2s;
+}
+
+.ff-btn-outline-dark:hover {
+  background-color: var(--black);
+  color: var(--white);
 }
 
 .ff-btn-fill-light {
-	background-color: var(--secondary);
-	border: 1px solid var(--secondary);
-	color: var(--primary);
-	transition: all ease 0.2s;
+  background-color: var(--secondary);
+  border: 1px solid var(--secondary);
+  color: var(--primary);
+  transition: all ease 0.2s;
 }
 
 .ff-btn-fill-light:hover {
-	background-color: transparent;
-	color: var(--secondary);
+  background-color: transparent;
+  color: var(--secondary);
 }

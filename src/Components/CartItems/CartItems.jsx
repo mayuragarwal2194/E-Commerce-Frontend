@@ -8,7 +8,7 @@ const CartItems = () => {
   const cartProducts = allProducts.filter((item) => cartItems[item.id] > 0);
 
   // Calculate subtotal and total
-  const subtotal = cartProducts.reduce((acc, item) => acc + item.new_price * cartItems[item.id], 0);
+  const subtotal = cartProducts.reduce((acc, item) => acc + item.newPrice * cartItems[item.id], 0);
   const total = subtotal; // Update this value with actual total calculation if needed
 
   return (
@@ -28,7 +28,7 @@ const CartItems = () => {
               <img src={`http://localhost:5000${item.image}`} alt={item.itemName} className='carticon-product-image img-fluid' />
             </div>
             <div className="col-3 text-start">{item.itemName}</div>
-            <div className="col">${item.new_price}</div>
+            <div className="col">${item.newPrice}</div>
             <div className="col">
               <div className="d-flex align-items-center justify-content-center">
                 <button className="decrease-qty-btn bg-transparent border border-end-0" onClick={() => removeFromCart(item.id)}>-</button>
@@ -36,7 +36,7 @@ const CartItems = () => {
                 <button className="increase-qty-btn bg-transparent border border-start-0" onClick={() => addToCart(item.id)}>+</button>
               </div>
             </div>
-            <div className="col">${(item.new_price * cartItems[item.id])}</div>
+            <div className="col">${(item.newPrice * cartItems[item.id])}</div>
             <div className="col">
               <button onClick={() => deleteFromCart(item.id)} className="btn btn-link text-danger">
                 <i className="bi bi-trash"></i> Delete
