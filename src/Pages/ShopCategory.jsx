@@ -1,39 +1,73 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './CSS/ShopCategory.css';
-import { getProductsByCategory,fetchParentCategories } from '../services/api'; // Ensure this matches your API service
+import { getProductsByTopCategory, fetchTopCategories } from '../services/api';
 import Item from '../Components/Item/Item';
 import dropdown_icon from '../Components/Assets/dropdown_icon.png';
 
 const ShopCategory = () => {
   const { categoryId } = useParams(); // This is the category name from URL
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [banner, setBanner] = useState(''); // Set this if you have dynamic banners
+  const [banner, setBanner] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Function to fetch category data
     const fetchCategoryData = async () => {
+      // Clear state before fetching new data
+      setProducts([]);
+      setBanner('');
+      setLoading(true);
+      setError(null);
+
       try {
         // Fetch all categories
-        const categoryData = await fetchParentCategories();
-        setCategories(categoryData);
+        const categoryData = await fetchTopCategories();
 
         // Find the category ID based on the category name from the URL
-        const category = categoryData.find(cat => cat.name === categoryId);
+        const category = categoryData.find(cat => cat.name.toLowerCase() === categoryId.toLowerCase());
+
         if (category) {
           // Fetch products by category ID
-          const products = await getProductsByCategory(category._id);
+          const products = await getProductsByTopCategory(category._id);
           setProducts(products);
+          setBanner(category.banner); // Adjust if you have a banner property
+          if (products.length === 0) {
+            // Optionally handle the case where no products are found
+            console.info('No products found for this category.');
+          }
         } else {
+          setError('Category not found');
           console.error('Category not found');
         }
       } catch (error) {
+        setError('Error fetching category data');
         console.error('Error fetching category data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
+    // Invoke the function to fetch data
     fetchCategoryData();
+
+    // Cleanup function to reset states on category change
+    return () => {
+      setProducts([]);
+      setBanner('');
+      setLoading(false);
+      setError(null);
+    };
   }, [categoryId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className='shop-category'>
@@ -44,7 +78,7 @@ const ShopCategory = () => {
             <span className='fw-600'>Showing 1-{products.length}</span> Out of {products.length} products
           </p>
           <div className="shopcategory-sort rounded-pill px-4 py-2">
-            Sort By <img src={dropdown_icon} alt="" />
+            Sort By <img src={dropdown_icon} alt="Sort Icon" />
           </div>
         </div>
         <div className="shopcategory-products">

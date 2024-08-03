@@ -19,6 +19,9 @@ const FooterNew = () => {
                 <div className="footer-email">
                   <input
                     type="email"
+                    name='email'
+                    id='email'
+                    autoComplete='true'
                     placeholder="E-mail"
                     className="bg-transparent w-100 mt-3 text-creame"
                   />

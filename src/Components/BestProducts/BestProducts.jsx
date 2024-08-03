@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Slider from "react-slick";
 import './BestProducts.css';
 import ItemNew from '../ItemNew/ItemNew';
-import { fetchParentCategories, getProductsByCategory } from '../../services/api';
+import { fetchTopCategories, getProductsByTopCategory } from '../../services/api';
 
 const BestProducts = () => {
   const [popularProducts, setPopularProducts] = useState([]);
@@ -12,13 +12,13 @@ const BestProducts = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categoryData = await fetchParentCategories();
+        const categoryData = await fetchTopCategories();
         const womenCategory = categoryData.find(category => category.name.toLowerCase() === 'women');
         const menCategory = categoryData.find(category => category.name.toLowerCase() === 'men');
         setCategories({ women: womenCategory?._id, men: menCategory?._id });
         
         if (womenCategory) {
-          const products = await getProductsByCategory(womenCategory._id);
+          const products = await getProductsByTopCategory(womenCategory._id);
           const popularItems = products.filter(product => product.isPopular);
           setPopularProducts(popularItems);
         }
@@ -34,7 +34,7 @@ const BestProducts = () => {
     const fetchProducts = async () => {
       if (categories[activeTab]) {
         try {
-          const products = await getProductsByCategory(categories[activeTab]);
+          const products = await getProductsByTopCategory(categories[activeTab]);
           const popularItems = products.filter(product => product.isPopular);
           setPopularProducts(popularItems);
         } catch (error) {
@@ -89,6 +89,7 @@ const BestProducts = () => {
                   itemName={item.itemName}
                   newPrice={item.newPrice}
                   oldPrice={item.oldPrice}
+                  tag={item.tag}
                 />
               ))}
             </Slider>
